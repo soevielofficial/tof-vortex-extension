@@ -3,8 +3,8 @@ const { actions, fs, util } = require('vortex-api');
 const path = require('path');
 
 // Basic Game Information
-const GAMEID = 'nexusmodsdomainid'; //Nexus Mods ID (the part of the URL before "mods")
-const GAME_NAME = 'Name of the Game';
+const GAMEID = 'toweroffantasy'; //Nexus Mods ID (the part of the URL before "mods")
+const GAME_NAME = 'Tower of Fantasy';
 const GAME_ARTWORK = 'gameart.png';
 const EXE_PATH = path.join('NamedFolder', 'Binaries', 'Win64', 'QRSL.exe');
 
