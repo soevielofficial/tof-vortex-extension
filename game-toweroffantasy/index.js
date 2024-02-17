@@ -45,20 +45,21 @@ function main(context) {
         return Promise.resolve(instPath.value);
 
       // find the steam version if the standalone version is not found in the registry
-      // TODO: fix steam path by adding an extra 'Tower of Fantasy\\'
       } catch (err) {
         return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
-          .then(game => game.gamePath);
+          .then((game) => {
+            log('debug', 'game.gamePath: ' + game.gamePath);
+            // Append \\Tower of Fantasy to game path for Steam version
+            const steamPath = path.join(game.gamePath, 'Tower of Fantasy');
+            log('debug', 'Steam path: ' + steamPath);
+            return steamPath;
+          });
       }
     }
 
     function prepareForModding(discovery) {
       // standalone version
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
-
-      // steam version
-      // not necessary after fixing steam path in findGame()
-      //return fs.ensureDirAsync(path.join(discovery.path, 'Tower of Fantasy', 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
     context.registerInstaller('toweroffantasy-mod', 25, testSupportedContent, installContent);
