@@ -1,118 +1,99 @@
-// Libraries required for the extension.
-const { actions, fs, util } = require('vortex-api');
 const path = require('path');
+const winapi = require('winapi-bindings');
+const { fs, log, util } = require('vortex-api');
 
-// Basic Game Information
-const GAMEID = 'toweroffantasy'; //Nexus Mods ID (the part of the URL before "mods")
-const GAME_NAME = 'Tower of Fantasy';
-const GAME_ARTWORK = 'gameart.png';
-const EXE_PATH = path.join('NamedFolder', 'Binaries', 'Win64', 'QRSL.exe');
+// Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
+const GAME_ID = 'toweroffantasy';
 
-// Game store IDs - fill in the ones that apply, leave any others as ''. 
+//Steam Application ID, you can get this from https://steamdb.info/apps/
 const STEAMAPP_ID = '2064650';
-const GOGAPP_ID = '';
-const EPICAPP_ID = '';
-const WINDOWSAPP_ID = '';
-const UPLAYAPP_ID = '';
-const GAMESTORES = [STEAMAPP_ID, GOGAPP_ID, EPICAPP_ID, WINDOWSAPP_ID, UPLAYAPP_ID];
-
-/* 
-  Tower of Fantasy Game Data 
-  - absModsPath: if the mods folder isn't inside the game directly, define the full path here. 
-  - modsPath: this is where the mod files need to be installed, relative to the game install folder.
-  - fileExt(optional): if for some reason the game uses something other than PAK files, add the extensions here.
-  - loadOrder: do we want to show the load order tab? 
-*/
-const UNREALDATA = {
-  // absModsPath: path.join(app.getPath('Documents'), 'My Games', 'Some game', 'Mods),
-  modsPath: path.join('NamedFolder', 'Content', 'Paks', 'Paks', '~mods'),
-  fileExt: '.pak',
-  loadOrder: true,
-}
 
 function main(context) {
-
-  context.requireExtension('Tower of Fantasy Mod Installer');
-
-  context.registerGame({
-    id: GAMEID,
-    name: GAME_NAME,
-    mergeMods: true,
-    queryPath: findGame,
-    requiresCleanup: true,
-    supportedTools: [],
-    queryModPath: () => '.',
-    compatible: {
-      unrealEngine: true
-    },
-    logo: GAME_ARTWORK,
-    executable: () => EXE_PATH,
-    requiredFiles: [
-      EXE_PATH,
-    ],
-    setup: prepareForModding,
-    environment: {
-      SteamAPPId: STEAMAPP_ID
-    },
-    details: {
-      unrealEngine: UNREALDATA,
-      steamAppId: STEAMAPP_ID,
-      customOpenModsPath: UNREALDATA.absModsPath || UNREALDATA.modsPath
-    }
-  });
-
-  if (UNREALDATA.loadOrder === true) {
-    let previousLO;
-    context.registerLoadOrderPage({
-      gameId: GAMEID,
-      gameArtURL: path.join(__dirname, GAME_ARTWORK),
-      preSort: (items, direction) => preSort(context.api, items, direction),
-      filter: mods => mods.filter(mod => mod.type === 'ue4-sortable-modtype'),
-      displayCheckboxes: false,
-      callback: (loadOrder) => {
-        if (previousLO === undefined) previousLO = loadOrder;
-        if (loadOrder === previousLO) return;
-        context.api.store.dispatch(actions.setDeploymentNecessary(GAMEID, true));
-        previousLO = loadOrder;
+	//This is the main function Vortex will run when detecting the game extension.
+  
+    context.registerGame({
+      id: GAME_ID,
+      name: 'Tower of Fantasy',
+      mergeMods: true,
+      queryPath: findGame,
+      supportedTools: [],
+      queryModPath: () => '.',
+      logo: 'gameart.png',
+      executable: () => 'QRSL.exe',
+      requiredFiles: ['QRSL.exe'],
+      setup: prepareForModding,
+      environment: {
+        SteamAPPId: STEAMAPP_ID,
       },
-      createInfoPanel: () => 
-      context.api.translate(`Drag and drop the mods on the left to reorder them. {{gameName}} loads mods in alphanumerical order so Vortex prefixes `
-      + 'the folder names with "AAA, AAB, AAC, ..." to ensure they load in the order you set here. '
-      + 'The number in the left column represents the overwrite order. The changes from mods with higher numbers will take priority over other mods which make similar edits.',
-      { replace: { gameName: GAME_NAME }}),
+      details: {
+        steamAppId: STEAMAPP_ID
+      },
     });
-  }
-}
 
-function findGame() {
-  return util.GameStoreHelper.findByAppId(GAMESTORES.filter(id => id !== ''))
-    .then(game => game.gamePath);
-}
+    function findGame() {
+      try {
+        const instPath = winapi.RegGetValue(
+          'HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\tof_launcher\\GameInstallPath', // Official launcher registry key
+          '%GAMEDIR%\\SteamLibrary\\steamapps\\common\\Tower of Fantasy\\Tower of Fantasy\\Hotta\\Binaries\\Win64',
+          'PATH');
 
-function prepareForModding(discovery) {
-  return fs.ensureDirWritableAsync(path.join(discovery.path, UNREALDATA.modsPath));
-}
+        if (!instPath) {
+          throw new Error('empty registry key');
+        }
 
-async function preSort(api, items, direction) {
-  const mods = util.getSafe(api.store.getState(), ['persistent', 'mods', GAMEID], {});
-  const fileExt = (UNREALDATA.fileExt || '.pak').substr(1).toUpperCase();
+        return Promise.resolve(instPath.value);
 
-  const loadOrder = items.map(mod => {
-    const modInfo = mods[mod.id];
-    let name = modInfo ? modInfo.attributes.customFileName ?? modInfo.attributes.logicalFileName ?? modInfo.attributes.name : mod.name;
-    const paks = util.getSafe(modInfo.attributes, ['unrealModFiles'], []);
-    if (paks.length > 1) name = name + ` (${paks.length} ${fileExt} files)`;
-    
-    return {
-      id: mod.id,
-      name,
-      imgUrl: util.getSafe(modInfo, ['attributes', 'pictureUrl'], path.join(__dirname, GAME_ARTWORK))
+      } catch (err) {
+        return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
+          .then(game => game.gamePath);
+      }
     }
-  });
 
-  return (direction === 'descending') ? Promise.resolve(loadOrder.reverse()) : Promise.resolve(loadOrder);
+    function prepareForModding(discovery) {
+      return fs.ensureDirAsync(path.join(discovery.path, 'Tower of Fantasy', 'Content', 'Paks', '~mods'));
+    }
+
+    context.registerInstaller('toweroffantasy-mod', 25, testSupportedContent, installContent);
+
+    const MOD_FILE_EXT = ".pak";
+
+    function testSupportedContent(files, gameId) {
+      // Make sure we're able to support this mod.
+      let supported = (gameId === GAME_ID) &&
+        (files.find(file => path.extname(file).toLowerCase() === MOD_FILE_EXT) !== undefined);
+    
+      return Promise.resolve({
+        supported,
+        requiredFiles: [],
+      });
+    }
+
+    function installContent(files) {
+      // The .pak file is expected to always be positioned in the mods directory we're going to disregard anything placed outside the root.
+      const modFile = files.find(file => path.extname(file).toLowerCase() === MOD_FILE_EXT);
+      const idx = modFile.indexOf(path.basename(modFile));
+      const rootPath = path.dirname(modFile);
+      
+      // Remove directories and anything that isn't in the rootPath.
+      const filtered = files.filter(file => 
+        ((file.indexOf(rootPath) !== -1) 
+        && (!file.endsWith(path.sep))));
+    
+      const instructions = filtered.map(file => {
+        return {
+          type: 'copy',
+          source: file,
+          destination: path.join(file.substr(idx)),
+        };
+      });
+    
+      return Promise.resolve({ instructions });
+    }
+	
+	return true
+  
 }
 
 module.exports = {
-  default: main,
-};
+    default: main,
+  };
