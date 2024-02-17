@@ -9,18 +9,18 @@ const GAME_ID = 'toweroffantasy';
 const STEAMAPP_ID = '2064650';
 
 function main(context) {
-	//This is the main function Vortex will run when detecting the game extension.
-  
+  //This is the main function Vortex will run when detecting the game extension.
+
     context.registerGame({
       id: GAME_ID,
       name: 'Tower of Fantasy',
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => '.',
+      queryModPath: () => 'Hotta/Content/Paks/~mods',
       logo: 'gameart.png',
-      executable: () => 'QRSL.exe',
-      requiredFiles: ['QRSL.exe'],
+      executable: () => 'Launcher/tof_launcher.exe',
+      requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],
       setup: prepareForModding,
       environment: {
         SteamAPPId: STEAMAPP_ID,
@@ -32,10 +32,11 @@ function main(context) {
 
     function findGame() {
       try {
+        // find the standalone version of the game through registry
         const instPath = winapi.RegGetValue(
-          'HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\tof_launcher\\GameInstallPath', // Official launcher registry key
-          '%GAMEDIR%\\SteamLibrary\\steamapps\\common\\Tower of Fantasy\\Tower of Fantasy\\Hotta\\Binaries\\Win64',
-          'PATH');
+          'HKEY_CURRENT_USER',
+          'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\tof_launcher',
+          'GameInstallPath'); // Official launcher registry key
 
         if (!instPath) {
           throw new Error('empty registry key');
@@ -43,6 +44,8 @@ function main(context) {
 
         return Promise.resolve(instPath.value);
 
+      // find the steam version if the standalone version is not found in the registry
+      // TODO: fix steam path by adding an extra 'Tower of Fantasy\\'
       } catch (err) {
         return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
           .then(game => game.gamePath);
@@ -50,7 +53,12 @@ function main(context) {
     }
 
     function prepareForModding(discovery) {
-      return fs.ensureDirAsync(path.join(discovery.path, 'Tower of Fantasy', 'Content', 'Paks', '~mods'));
+      // standalone version
+      return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
+
+      // steam version
+      // not necessary after fixing steam path in findGame()
+      //return fs.ensureDirAsync(path.join(discovery.path, 'Tower of Fantasy', 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
     context.registerInstaller('toweroffantasy-mod', 25, testSupportedContent, installContent);
