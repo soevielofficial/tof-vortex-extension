@@ -17,7 +17,7 @@ function main(context) {
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => 'Hotta/Content/Paks/~mods',
+      queryModPath: () => 'Hotta/Content/Paks',
       logo: 'gameart.png',
       executable: () => 'Launcher/tof_launcher.exe',
       requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],
@@ -62,7 +62,7 @@ function main(context) {
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
-    context.registerInstaller('toweroffantasy-mod', 25, testSupportedContent, installContent);
+    context.registerInstaller('toweroffantasy', 25, testSupportedContent, installContent);
 
     const MOD_FILE_EXT = ".pak";
 

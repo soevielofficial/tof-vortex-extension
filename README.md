@@ -17,10 +17,12 @@
     <img height="64px" src="https://cdn.7tv.app/emote/631e5c605a703c4a98db593c/4x.webp"></a>
 </p>
 
-## Features
+## About
+Tower of Fantasy Vortex Library is an extension allows you to manage your downloaded mods for Tower of Fantasy directly through Vortex.
 
-- Close Integration with NexusMods
-- Mod Profiles
+## Support
+- Global Client.
+- Steam Client.
 
 ## Contributing
 We love your feedback! We want to make contributing to this project as easy and transparent as possible, whether it's:

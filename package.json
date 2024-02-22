@@ -1,11 +1,11 @@
 {
   "name": "tof-vortex-library",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vortex Extension for Tower of Fantasy.",
   "main": "./out/index.js",
   "repository": "https://github.com/soevielofficial/tof-vortex-library",
   "scripts": {
-    "bundle7z": "7z a -t7z tof-vortex-library.7z .\\game-toweroffantasy\\index.js .\\game-toweroffantasy\\info.json .\\game-toweroffantasy\\gameart.png"
+    "bundle7z": "7z a -t7z tof-vortex-library-1.0.2.7z .\\game-toweroffantasy\\index.js .\\game-toweroffantasy\\info.json .\\game-toweroffantasy\\gameart.png"
   },
   "author": "soevielofficial",
   "license": "GPL-3.0",
