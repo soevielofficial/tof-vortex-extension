@@ -62,7 +62,7 @@ function main(context) {
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
-    context.registerInstaller('toweroffantasy', 25, testSupportedContent, installContent);
+    context.registerInstaller('toweroffantasy-global', 25, testSupportedContent, installContent);
 
     const MOD_FILE_EXT = ".pak";
 
