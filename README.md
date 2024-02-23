@@ -21,8 +21,15 @@
 Tower of Fantasy Vortex Library is an extension allows you to manage your downloaded mods for Tower of Fantasy directly through Vortex.
 
 ## Support
-- Global Client.
-- Steam Client.
+- ~~Chinese Client~~ WIP
+- ~~Korean Client~~ WIP
+- Global Client (Steam & Official Launcher)
+
+## Docs:
+- [Download Vortex](https://www.nexusmods.com/about/vortex/)
+- [Installation Guide](https://youtu.be/BBqmZEnhw9Y)
+- [Tower of Fantasy on NexusMods](https://www.nexusmods.com/toweroffantasy)
+- [ToF Vortex Library on NexusMods](https://www.nexusmods.com/site/mods/793)
 
 ## Contributing
 We love your feedback! We want to make contributing to this project as easy and transparent as possible, whether it's:
