@@ -1,6 +1,6 @@
 {
   "name": "tof-vortex-library",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Vortex Extension for Tower of Fantasy.",
   "main": "./out/index.js",
   "repository": "https://github.com/soevielofficial/tof-vortex-library",
