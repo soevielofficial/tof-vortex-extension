@@ -23,7 +23,7 @@ function main(context) {
       requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],
       setup: prepareForModding,
       environment: {
-        SteamAPPId: STEAMAPP_ID,
+        SteamAppId: STEAMAPP_ID,
       },
       details: {
         steamAppId: STEAMAPP_ID
