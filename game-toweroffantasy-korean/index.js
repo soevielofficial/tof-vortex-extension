@@ -3,13 +3,13 @@ const winapi = require('winapi-bindings');
 const { fs, log, util } = require('vortex-api');
 
 // Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
-const GAME_ID = 'toweroffantasy';
+const GAME_ID = 'toweroffantasy'; 
 
-//Steam Application ID, you can get this from https://steamdb.info/apps/
-const STEAMAPP_ID = '2088380';
+// Steam Application ID, you can get this from https://steamdb.info/apps/
+const STEAMAPP_ID = '2088380'; // KR STEAMAPP_ID
 
 function main(context) {
-  //This is the main function Vortex will run when detecting the game extension.
+  // This is the main function Vortex will run when detecting the game extension.
 
     context.registerGame({
       id: GAME_ID,
@@ -31,12 +31,34 @@ function main(context) {
     });
 
     function findGame() {
-      return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
-          .then(game => game.gamePath);
+      try {
+        // Find the standalone version of the game through registry
+        const instPath = winapi.RegGetValue(
+          'HKEY_LOCAL_MACHINE',
+          'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Hotta',
+          'GameInstallPath'); // Official launcher registry key
+
+        if (!instPath) {
+          throw new Error('empty registry key');
+        }
+
+        return Promise.resolve(instPath.value);
+
+      // Find the steam version if the standalone version is not found in the registry
+      } catch (err) {
+        return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
+          .then((game) => {
+            log('debug', 'game.gamePath: ' + game.gamePath);
+            // Append \\타워 오브 판타지 to game path for Steam version
+            const steamPath = path.join(game.gamePath, '타워 오브 판타지');
+            log('debug', 'Steam path: ' + steamPath);
+            return steamPath;
+          });
+      }
     }
 
     function prepareForModding(discovery) {
-      // standalone version
+      // Standalone version
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
     }
 

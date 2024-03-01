@@ -5,11 +5,11 @@ const { fs, log, util } = require('vortex-api');
 // Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
 const GAME_ID = 'toweroffantasy';
 
-//Steam Application ID, you can get this from https://steamdb.info/apps/
-const STEAMAPP_ID = '2147450';
+// Steam Application ID, you can get this from https://steamdb.info/apps/
+const STEAMAPP_ID = '2147450'; // CN STEAMAPP_ID
 
 function main(context) {
-  //This is the main function Vortex will run when detecting the game extension.
+  // This is the main function Vortex will run when detecting the game extension.
 
     context.registerGame({
       id: GAME_ID,
@@ -17,10 +17,10 @@ function main(context) {
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => 'Hotta/Content/Paks',
+      queryModPath: () => 'Client/WindowsNoEditor/Hotta/Content/Paks',
       logo: 'gameart.png',
-      executable: () => 'Launcher/tof_launcher.exe',
-      requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],
+      executable: () => 'WmGpLaunch/WmgpLauncher.exe',
+      requiredFiles: ['Client/WindowsNoEditor/Hotta/Binaries/Win64/QRSL.exe'],
       setup: prepareForModding,
       environment: {
         SteamAppId: STEAMAPP_ID,
@@ -32,9 +32,9 @@ function main(context) {
 
     function findGame() {
       try {
-        // find the standalone version of the game through registry
+        // Find the standalone version of the game through registry
         const instPath = winapi.RegGetValue(
-          'HKEY_CURRENT_USER',
+          'HKEY_LOCAL_MACHINE',
           'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Hotta',
           'GameInstallPath'); // Official launcher registry key
 
@@ -44,7 +44,7 @@ function main(context) {
 
         return Promise.resolve(instPath.value);
 
-      // find the steam version if the standalone version is not found in the registry
+      // Find the steam version if the standalone version is not found in the registry
       } catch (err) {
         return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
           .then((game) => {
@@ -58,7 +58,7 @@ function main(context) {
     }
 
     function prepareForModding(discovery) {
-      // standalone version
+      // Standalone version
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
