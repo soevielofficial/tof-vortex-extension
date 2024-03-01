@@ -21,7 +21,7 @@
 Tower of Fantasy Vortex Library is an extension allows you to manage your downloaded mods for Tower of Fantasy directly through Vortex.
 
 ## Support
-- ~~Chinese Client~~ WIP
+- Chinese Client (Steam & Official Launcher)
 - ~~Korean Client~~ WIP
 - Global Client (Steam & Official Launcher)
 
