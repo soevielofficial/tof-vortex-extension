@@ -6,7 +6,7 @@ const { fs, log, util } = require('vortex-api');
 const GAME_ID = 'toweroffantasy';
 
 // Steam Application ID, you can get this from https://steamdb.info/apps/
-const STEAMAPP_ID = '2147450'; // CN SteamAPP_ID
+const STEAMAPP_ID = '2147450'; // CN STEAMAPP_ID
 
 function main(context) {
   // This is the main function Vortex will run when detecting the game extension.

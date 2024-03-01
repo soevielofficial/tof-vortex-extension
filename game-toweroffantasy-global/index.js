@@ -3,10 +3,10 @@ const winapi = require('winapi-bindings');
 const { fs, log, util } = require('vortex-api');
 
 // Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
-const GAME_ID = 'toweroffantasy'; // GLOBAL SteamAPP_ID
+const GAME_ID = 'toweroffantasy'; 
 
 // Steam Application ID, you can get this from https://steamdb.info/apps/
-const STEAMAPP_ID = '2064650';
+const STEAMAPP_ID = '2064650'; // GLOBAL STEAMAPP_ID
 
 function main(context) {
   // This is the main function Vortex will run when detecting the game extension.
