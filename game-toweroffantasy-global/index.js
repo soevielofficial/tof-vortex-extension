@@ -3,13 +3,13 @@ const winapi = require('winapi-bindings');
 const { fs, log, util } = require('vortex-api');
 
 // Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
-const GAME_ID = 'toweroffantasy';
+const GAME_ID = 'toweroffantasy'; // GLOBAL SteamAPP_ID
 
-//Steam Application ID, you can get this from https://steamdb.info/apps/
+// Steam Application ID, you can get this from https://steamdb.info/apps/
 const STEAMAPP_ID = '2064650';
 
 function main(context) {
-  //This is the main function Vortex will run when detecting the game extension.
+  // This is the main function Vortex will run when detecting the game extension.
 
     context.registerGame({
       id: GAME_ID,
@@ -32,7 +32,7 @@ function main(context) {
 
     function findGame() {
       try {
-        // find the standalone version of the game through registry
+        // Find the standalone version of the game through registry
         const instPath = winapi.RegGetValue(
           'HKEY_CURRENT_USER',
           'SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\tof_launcher',
@@ -44,7 +44,7 @@ function main(context) {
 
         return Promise.resolve(instPath.value);
 
-      // find the steam version if the standalone version is not found in the registry
+      // Find the steam version if the standalone version is not found in the registry
       } catch (err) {
         return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
           .then((game) => {
@@ -58,7 +58,7 @@ function main(context) {
     }
 
     function prepareForModding(discovery) {
-      // standalone version
+      // Standalone version
       return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
