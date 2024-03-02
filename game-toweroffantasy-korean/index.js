@@ -17,10 +17,10 @@ function main(context) {
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => 'Hotta/Content/Paks',
+      queryModPath: () => 'Client/WindowsNoEditor/Hotta/Content/Paks',
       logo: 'gameart.png',
-      executable: () => 'Launcher/tof_launcher.exe',
-      requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],
+      executable: () => 'WmGpLaunch/WmgpLauncher.exe',
+      requiredFiles: ['Client/WindowsNoEditor/Hotta/Binaries/Win64/qrsl.exe'],
       setup: prepareForModding,
       environment: {
         SteamAppId: STEAMAPP_ID,
