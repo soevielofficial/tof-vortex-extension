@@ -22,7 +22,7 @@ Tower of Fantasy Vortex Library is an extension allows you to manage your downlo
 
 ## Support
 - Chinese Client (Steam & Official Launcher)
-- ~~Korean Client~~ WIP
+- Korean Client (Steam & Official Launcher)
 - Global Client (Steam & Official Launcher)
 
 ## Docs:
