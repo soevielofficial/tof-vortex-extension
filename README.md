@@ -1,7 +1,7 @@
 <h1 align="center">Tower of Fantasy Vortex Library<h1>
 
 <p align="center" width="100%">
-    <img height="256px" src="https://cdn.discordapp.com/attachments/862008488502755330/1208393190768377896/gameart.png?ex=65e31edb&is=65d0a9db&hm=de1df5db688e803c4e3be09bbbfaf7784072fc7e57d2c7fa38269371478d2154&"></a>
+    <img height="256px" src="https://cdn.discordapp.com/attachments/862008488502755330/1208393190768377896/gameart.png?ex=660808db&is=65f593db&hm=c8c3422f39760d04bd9aa6cdcad51db5e6ee14ad2e7dfa9542763946519222d9&"></a>
 </p>
 
 <p align="center" width="100%">
