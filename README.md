@@ -1,7 +1,7 @@
-<h1 align="center">Tower of Fantasy Vortex Library<h1>
+<h1 align="center">Tower of Fantasy Vortex Extension<h1>
 
 <p align="center" width="100%">
-    <img height="256px" src="https://cdn.discordapp.com/attachments/862008488502755330/1208393190768377896/gameart.png?ex=660808db&is=65f593db&hm=c8c3422f39760d04bd9aa6cdcad51db5e6ee14ad2e7dfa9542763946519222d9&"></a>
+    <img height="256px" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2064650/header.jpg?t=1716288063"></a>
 </p>
 
 <p align="center" width="100%">
@@ -11,44 +11,27 @@
 </p>
 
 <p align="center" width="100%">
-    <img height="64px" src="https://cdn.7tv.app/emote/6319eda18cf0978e2955940a/4x.webp"></a>
-    <img height="64px" src="https://cdn.7tv.app/emote/65c2a83580e016b01c359f65/4x.webp"></a>
-    <img height="64px" src="https://cdn.7tv.app/emote/63f8101de5d9925da811ed58/4x.webp"></a>
-    <img height="64px" src="https://cdn.7tv.app/emote/631e5c605a703c4a98db593c/4x.webp"></a>
+    <img height="128px" src="https://cdn.7tv.app/emote/6319eda18cf0978e2955940a/4x.webp"></a>
+    <img height="128px" src="https://cdn.7tv.app/emote/65c2a83580e016b01c359f65/4x.webp"></a>
+    <img height="128px" src="https://cdn.7tv.app/emote/65e9d1e229529a686c12634b/4x.webp"></a>
+    <img height="128px" src="https://cdn.7tv.app/emote/63f8101de5d9925da811ed58/4x.webp"></a>
+    <img height="128px" src="https://cdn.7tv.app/emote/631e5c605a703c4a98db593c/4x.webp"></a>
 </p>
 
 ## About
 Tower of Fantasy Vortex Library is an extension allows you to manage your downloaded mods for Tower of Fantasy directly through Vortex.
 
 ## Support
-- Chinese Client (Steam & Official Launcher)
-- Korean Client (Steam & Official Launcher)
+- Chinese Client (Steam & Official Launcher) 
 - Global Client (Steam & Official Launcher)
+- Korean Client (Steam & Official Launcher)
 
 ## Docs:
 - [Download Vortex](https://www.nexusmods.com/about/vortex/)
-- [Installation Guide](https://youtu.be/BBqmZEnhw9Y)
 - [Tower of Fantasy on NexusMods](https://www.nexusmods.com/toweroffantasy)
-- [ToF Vortex Library on NexusMods](https://www.nexusmods.com/site/mods/793)
-
-## Contributing
-We love your feedback! We want to make contributing to this project as easy and transparent as possible, whether it's:
-
-- Reporting a bug.
-- Discussing the current state of the code.
-- Submitting a fix.
-- Proposing new features.
-- Becoming a maintainer.
-
-Pull requests are the best way to propose changes to the codebase. We actively welcome your pull requests:
-
-1. Fork the repo and create your branch from `dev`.
-2. If you've added code that should be tested.
-3. Make sure everything runs normally.
-4. Issue that pull request!
+- [ToF Vortex Extension on Nexus Mods](https://www.nexusmods.com/site/mods/793)
 
 ## Authors
-
-- [soevielofficial](https://www.github.com/soevielofficial)
 - [Yako](https://github.com/Yako4341)
 - [Sentiment](https://github.com/Anomalous-Sentiment)
+- [soevielofficial](https://www.github.com/soevielofficial)

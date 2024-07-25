@@ -17,7 +17,7 @@ function main(context) {
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => 'Hotta/Content/Paks',
+      queryModPath: () => 'Hotta/Content/Paks/~mods',
       logo: 'gameart.png',
       executable: () => 'Launcher/tof_launcher.exe',
       requiredFiles: ['Hotta/Binaries/Win64/QRSL.exe'],

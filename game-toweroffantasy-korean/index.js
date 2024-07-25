@@ -17,7 +17,7 @@ function main(context) {
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
-      queryModPath: () => 'Client/WindowsNoEditor/Hotta/Content/Paks',
+      queryModPath: () => 'Client/WindowsNoEditor/Hotta/Content/Paks/~mods',
       logo: 'gameart.png',
       executable: () => 'WmGpLaunch/WmgpLauncher.exe',
       requiredFiles: ['Client/WindowsNoEditor/Hotta/Binaries/Win64/qrsl.exe'],
