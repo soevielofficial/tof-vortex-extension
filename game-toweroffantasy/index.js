@@ -1,56 +1,49 @@
 const path = require('path');
 const winapi = require('winapi-bindings');
 const { fs, log, util } = require('vortex-api');
-
-// Nexus Mods domain for the game. e.g. nexusmods.com/toweroffantasy
-const GAME_ID = 'toweroffantasy'; 
-
-// Steam Application ID, you can get this from https://steamdb.info/apps/
-const STEAMAPP_ID = '2088380'; // KR STEAMAPP_ID
+const GAME_ID = 'toweroffantasy';
+const STEAMAPP_ID = '2064650';
 
 function main(context) {
-  // This is the main function Vortex will run when detecting the game extension.
-
     context.registerGame({
       id: GAME_ID,
-      name: '타워 오브 판타지',
+      name: 'Tower of Fantasy',
       mergeMods: true,
       queryPath: findGame,
       supportedTools: [],
       queryModPath: () => 'Client/WindowsNoEditor/Hotta/Content/Paks/~mods',
       logo: 'gameart.png',
       executable: () => 'WmGpLaunch/WmgpLauncher.exe',
-      requiredFiles: ['Client/WindowsNoEditor/Hotta/Binaries/Win64/qrsl.exe'],
+      requiredFiles: ['Client/WindowsNoEditor/Hotta/Binaries/Win64/QRSL.exe'],
       setup: prepareForModding,
       environment: {
         SteamAppId: STEAMAPP_ID,
       },
+
       details: {
         steamAppId: STEAMAPP_ID
       },
+
     });
 
     function findGame() {
       try {
-        // Find the standalone version of the game through registry
         const instPath = winapi.RegGetValue(
           'HKEY_LOCAL_MACHINE',
-          'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Hotta',
-          'GameInstallPath'); // Official launcher registry key
+          'SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\TowerOfFantasy_Global',
+          'GameInstallPath');
 
         if (!instPath) {
-          throw new Error('empty registry key');
+          throw new Error('GameInstallPath not found in registry');
         }
 
         return Promise.resolve(instPath.value);
 
-      // Find the steam version if the standalone version is not found in the registry
       } catch (err) {
         return util.GameStoreHelper.findByAppId([STEAMAPP_ID])
           .then((game) => {
             log('debug', 'game.gamePath: ' + game.gamePath);
-            // Append \\타워 오브 판타지 to game path for Steam version
-            const steamPath = path.join(game.gamePath, '타워 오브 판타지');
+            const steamPath = path.join(game.gamePath, 'Tower of Fantasy');
             log('debug', 'Steam path: ' + steamPath);
             return steamPath;
           });
@@ -58,16 +51,14 @@ function main(context) {
     }
 
     function prepareForModding(discovery) {
-      // Standalone version
-      return fs.ensureDirAsync(path.join(discovery.path, 'Hotta', 'Content', 'Paks', '~mods'));
+      return fs.ensureDirAsync(path.join(discovery.path, 'Client', 'WindowsNoEditor', 'Hotta', 'Content', 'Paks', '~mods'));
     }
 
-    context.registerInstaller('toweroffantasy-korean', 25, testSupportedContent, installContent);
+    context.registerInstaller('toweroffantasy', 25, testSupportedContent, installContent);
 
     const MOD_FILE_EXT = ".pak";
 
     function testSupportedContent(files, gameId) {
-      // Make sure we're able to support this mod.
       let supported = (gameId === GAME_ID) &&
         (files.find(file => path.extname(file).toLowerCase() === MOD_FILE_EXT) !== undefined);
     
@@ -78,12 +69,10 @@ function main(context) {
     }
 
     function installContent(files) {
-      // The .pak file is expected to always be positioned in the mods directory we're going to disregard anything placed outside the root.
       const modFile = files.find(file => path.extname(file).toLowerCase() === MOD_FILE_EXT);
       const idx = modFile.indexOf(path.basename(modFile));
       const rootPath = path.dirname(modFile);
       
-      // Remove directories and anything that isn't in the rootPath.
       const filtered = files.filter(file => 
         ((file.indexOf(rootPath) !== -1) 
         && (!file.endsWith(path.sep))));
@@ -105,4 +94,4 @@ function main(context) {
 
 module.exports = {
     default: main,
-  };
+}
